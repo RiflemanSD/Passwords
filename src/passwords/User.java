@@ -51,5 +51,16 @@ public class User {
         this.categs = categs;
     }
     
-    
+    public void addCat(Category cat) {
+        this.categs.add(cat);
+    }
+    public void delCat(String name) {
+        this.categs.remove(this.getCatByName(name));
+    }
+    public Category getCatByName(String name) {
+        for (Category cat: this.categs) {
+            if (cat.getName().equals(name)) return cat;
+        }
+        return null;
+    }
 }

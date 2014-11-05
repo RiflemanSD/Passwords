@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JSeparator;
 import passwords.Account;
 import passwords.Category;
 import passwords.Frame;
@@ -21,20 +22,21 @@ import passwords.listeners.MouseListenerCategory;
  *
  * @author rifleman
  */
-public class MenuAccounts {
-    private Frame f;
+public class MenuAccount {
     private Account acc;
     private JMenu accMenu;
     private JMenuItem[] values;
-    private JMenuItem item;
-    private MouseListenerAccount listener;
+    private JMenuItem modify;
+    private JMenuItem delete;
     private User user;
     
-    public MenuAccounts(Frame f, Account acc) {
-        this.listener = new MouseListenerAccount();
-        this.f = f;
+    public MenuAccount(Account acc, MouseListenerAccount modifyListener, MouseListenerAccount deleteListener) {
         this.acc = acc;
         
+        this.modify = new JMenu("Modify");
+        this.modify.addMouseListener(modifyListener);
+        this.delete = new JMenu("Delete");
+        this.delete.addMouseListener(deleteListener);
         this.accMenu = new JMenu(acc.getName());
         values = new JMenuItem[4];
         values[0] = new JMenuItem(this.acc.getName());
@@ -43,15 +45,23 @@ public class MenuAccounts {
         this.accMenu.add(values[0]);
         this.accMenu.add(values[1]);
         this.accMenu.add(values[2]);
+        this.accMenu.add(new JSeparator());
+        this.accMenu.add(this.modify);
+        this.accMenu.add(this.delete);
     }
-    public void addAccount() {
-        
+
+    public void modifyAccount(String[] values) {
+        this.acc.setName(values[0]);
+        this.acc.setPass(values[1]);
+        this.acc.setEmail(values[2]);
+        this.values[0].setText(values[0]);
+        this.values[1].setText(values[1]);
+        this.values[2].setText(values[2]);
     }
-    public void delAccount() {
-        
-    }
-    public void modifyAccount() {
-        
+    public void deleteAccount() {
+        this.accMenu.removeAll();
+        this.accMenu.revalidate();
+        this.acc = null;
     }
     /*public MenuAccounts() {
         this.accMenu = new JMenu(this.name);

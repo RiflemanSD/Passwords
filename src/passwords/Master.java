@@ -7,7 +7,8 @@ package passwords;
 
 import java.util.ArrayList;
 import passwords.dialogs.DialogAccount;
-import passwords.menus.MenuAccounts;
+import passwords.dialogs.ModifyAccountDialog;
+import passwords.menus.MenuAccount;
 
 /**
  *
@@ -15,7 +16,11 @@ import passwords.menus.MenuAccounts;
  */
 public class Master {
     private Frame frame;
-    private MenuAccounts mAcc;
+    
+    private String[] newAccValues;
+    private ModifyAccountDialog accDialog;
+    
+    private ArrayList<User> users;
     
     public Master() {
         Frame frame = new Frame();
@@ -38,5 +43,26 @@ public class Master {
         l3.add(cat1);
         l3.add(cat2);
         User u = new User("markos" , "1002", l3);
+    }
+    
+    public void addUser(User user) {
+        this.users.add(user);
+    }
+    public void delUser(String name) {
+        this.users.remove(this.getUserByName(name));
+    }
+    public User getUserByName(String name) {
+        for (User user: this.users) {
+            if (user.getName().equals(name)) return user;
+        }
+        return null;
+    }
+    
+    public void getTextsFromAccDialog() {
+        this.newAccValues = accDialog.getTexts();
+    }
+
+    public void closeModifyAccDialog() {
+        this.accDialog.close();
     }
 }

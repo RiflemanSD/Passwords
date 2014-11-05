@@ -22,10 +22,6 @@ public class Category {
     public Category(String name, ArrayList<Account> accounts) {
         this.name = name;
         this.accounts = accounts;
-        this.catMenu = new JMenu(this.name);
-        for (Account acc: accounts) {
-            this.catMenu.add(acc.accMenu);
-        }
     }
 
     public String getName() {
@@ -52,5 +48,6 @@ public class Category {
         this.accounts = accounts;
     }
     
+
     
 }

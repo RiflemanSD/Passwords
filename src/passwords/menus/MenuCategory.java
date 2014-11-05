@@ -10,6 +10,8 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JSeparator;
+import passwords.Account;
 import passwords.Category;
 import passwords.Frame;
 import passwords.User;
@@ -20,27 +22,53 @@ import passwords.listeners.MouseListenerCategory;
  * @author rifleman
  */
 public class MenuCategory {
-    private Frame f;
+    private Category cat;
     private JMenu catMenu;
-    private JMenu[] accMenus;
-    private MouseListenerCategory listener;
-    private User user;
+    private JMenuItem modifyCategory;
+    private JMenuItem deleteCategory;
+    private JMenuItem addAccount;
     
-    public MenuCategory(Frame f) {
-        this.listener = new MouseListenerCategory();
-        this.f = f;
+    private ArrayList<JMenu> accMenus;
+    private MouseListenerCategory modifyListener;
+    private MouseListenerCategory deleteListener;
+    
+    public MenuCategory(Category cat, MouseListenerCategory modifyListener, MouseListenerCategory deleteListener, MouseListenerCategory addListener) {
+        this.cat = cat;
         
-        this.menu = new JMenu("Passwords");
-        this.bar = new JMenuBar();
+        this.modifyCategory = new JMenu("Modify Category");
+        this.modifyCategory.addMouseListener(modifyListener);
+        this.deleteCategory = new JMenu("Delete Category");
+        this.deleteCategory.addMouseListener(deleteListener);
+        this.addAccount = new JMenu("Add account");
+        this.addAccount.addMouseListener(addListener);
         
-        for (Category cat: user.getCategs()) {
-            this.menu.add(cat.catMenu);
-        }
-        this.item = new JMenuItem("test");
-        this.menu.addMouseListener(this.listener);
-        this.bar.add(this.menu);
-        this.f.setJMenuBar(bar);
-        //this.f.repaint();
-        this.f.setVisible(true);
+        this.catMenu = new JMenu(cat.getName());
+        
+        this.catMenu.add(this.modifyCategory);
+        this.catMenu.add(this.deleteCategory);
+        this.catMenu.add(this.addAccount);
+        this.catMenu.add(new JSeparator());
+        
+        this.accMenus = new ArrayList<JMenu>();
+    }
+
+    public void modifyCategory(String name) {
+        this.cat.setName(name);
+        this.catMenu.setText(name);
+    }
+    public void deleteCategory() {
+        this.catMenu.removeAll();
+        this.catMenu.revalidate();
+        this.cat = null;
+    }
+    public void addAccount(JMenu acc) {
+        this.accMenus.add(acc);
+        this.catMenu.add(acc);
+    }
+    public JMenu getMenu() {
+        return this.catMenu;
+    }
+    public Category getCategory() {
+        return this.cat;
     }
 }
